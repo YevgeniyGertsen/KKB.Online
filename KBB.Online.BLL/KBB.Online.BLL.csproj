@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="AccountService.cs" />
     <Compile Include="personal_data.cs" />
     <Compile Include="Address.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

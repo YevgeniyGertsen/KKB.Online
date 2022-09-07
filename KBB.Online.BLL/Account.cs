@@ -8,6 +8,7 @@ namespace KBB.Online.BLL
 {
     public class Account
     {
+        public int UserId { get; set; }
         public int AccountId { get; set; }
         public string IBAN { get; set; }
 

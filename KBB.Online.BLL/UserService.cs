@@ -19,8 +19,8 @@ namespace KBB.Online.BLL
         /// <summary>
         /// Метод для создания пользователя в Базе данных
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="message"></param>
+        /// <param name="user">Данные по пользователю</param>
+        /// <param name="message">Сообщение об ошибке</param>
         /// <returns></returns>
         public bool CreateUser(personal_data user, out string message)
         {
@@ -84,12 +84,33 @@ namespace KBB.Online.BLL
 
                 RestResponse response = restClient.Execute(request);
 
+                if (response.ErrorException != null)
+                {
+                    throw new Exception(
+                        "При запросе данных возникла ошибка: " +
+                        response.ErrorMessage,
+                        response.ErrorException);
+                }
+                else if (response.Content == "[]")//[]
+                {
+                    throw new Exception("По введенному ИИН данных нет");
+                }
+                else
+                {
+                    User user = JsonConvert
+                        .DeserializeObject<User>(response.Content);
 
-                User personalData = JsonConvert.DeserializeObject<User>(response.Content);
+                    return CreateUser(user.personal_data, out message);
 
-
-                message = "ok";
-                return true;
+                    //if (CreateUser(user.personal_data, out message))
+                    //{
+                    //    return true;
+                    //}
+                    //else
+                    //{
+                    //    return false;
+                    //}
+                }
             }
             catch (Exception ex)
             {
@@ -97,6 +118,7 @@ namespace KBB.Online.BLL
                 return false;
             }
         }
+
 
     }
 }

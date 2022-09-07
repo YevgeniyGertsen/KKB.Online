@@ -22,12 +22,11 @@ namespace KKB.Online
 
                 Console.WriteLine("Добро пожаловать в Интернет Банкинг");
                 Console.WriteLine("");
-                Console.WriteLine("Выберете пункты меню: ");
                 Console.WriteLine("1. Авторизация");
                 Console.WriteLine("2. Регистрация");
                 Console.WriteLine("3. Выход");
-
-               ch =  Convert.ToInt32(Console.ReadLine());
+                Console.Write("Выберете пункты меню: ");
+                ch = Convert.ToInt32(Console.ReadLine());
 
                 switch (ch)
                 {
@@ -47,33 +46,52 @@ namespace KKB.Online
                             }
                             else
                             {
+                                Console.Clear();
                                 Console.WriteLine("Добро пожаловать {0}", user.FullName);
+
+                                Console.WriteLine("");
+                                Console.WriteLine("1. Создать счет");
+                                Console.WriteLine("2. Пополнить счет");
+                                Console.WriteLine("3. Перевести деньги со счета");
+
+                                Console.Write("Выберете пункты меню: ");
+                                ch = Convert.ToInt32(Console.ReadLine());
+
+                                switch (ch)
+                                {
+                                    case 1:
+                                        {
+                                            
+                                            break;
+                                        }
+
+                                    case 2:
+                                        {
+
+                                            break;
+                                        }
+                                    case 3:
+                                        {
+
+                                            break;
+                                        }
+                                }
+
+
                             }
                         }
                         break;
                     case 2:
                         {
                             #region Registartion
-                            //User user = new User();
-                            //user.Accounts = null;
-                            //user.Address = null;
-                            //user.Birth = new DateTime(1988, 01, 11);
-                            //user.IIN = "880111300392";
-                            //user.Name = "Yevgeniy";
-                            //user.SecondName = "Gertsen";
-                            //user.Password = "123";
-                            //user.PhoneNumber = "+7 777 209 43 43";
-                            //user.Sex = "M";
-
                             Console.Write("Введите Ваш ИИН ");
                             string iin = Console.ReadLine();
-                            
+
                             if (userService.GetUserData(iin, out message))
                             {
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine(message);
                                 Console.ForegroundColor = ConsoleColor.White;
-                              
                             }
                             else
                             {
@@ -88,7 +106,7 @@ namespace KKB.Online
                         throw new Exception("Необходимо выбрать пункт меню");
                 }
             }
-            catch (Exception) when (ch==0)
+            catch (Exception) when (ch == 0)
             {
                 Console.WriteLine("у не должен быть рвен 0");
             }
