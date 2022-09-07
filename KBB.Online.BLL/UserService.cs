@@ -1,9 +1,8 @@
 ﻿using LiteDB;
+using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KBB.Online.BLL
 {
@@ -15,23 +14,28 @@ namespace KBB.Online.BLL
         }
 
         private string Path { get; set; }
-        public List<User> Users { get; set; }
+        public List<personal_data> Users { get; set; }
 
-
-        public bool Registration(User user, out string message)
+        /// <summary>
+        /// Метод для создания пользователя в Базе данных
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public bool CreateUser(personal_data user, out string message)
         {
             try
             {
-                if (GetUser(user.IIN) != null)
+                if (GetUser(user.Iin) != null)
                 {
-                    message = "Пользователь с ИИН: " + user.IIN + " уже зарегистрирован!";
+                    message = "Пользователь с ИИН: " + user.Iin + " уже зарегистрирован!";
                     return false;
                 }
                 else
                 {
                     using (var db = new LiteDatabase(Path))
                     {
-                        var users = db.GetCollection<User>("Users");
+                        var users = db.GetCollection<personal_data>("Users");
 
                         users.Insert(user);
 
@@ -47,18 +51,18 @@ namespace KBB.Online.BLL
             }
         }
 
-        public User GetUser(string iin, string psw = null)
+        public personal_data GetUser(string iin, string psw = null)
         {
-            User user = null;
+            personal_data user = null;
             try
             {
                 using (var db = new LiteDatabase(Path))
                 {
-                    var users = db.GetCollection<User>("Users");
-                    user = users.FindOne(f => f.IIN == iin);
+                    var users = db.GetCollection<personal_data>("Users");
+                    user = users.FindOne(f => f.Iin == iin);
                     if (!string.IsNullOrWhiteSpace(psw))
                     {
-                        user = users.FindOne(f => f.IIN == iin && f.Password == psw);
+                        user = users.FindOne(f => f.Iin == iin && f.Password == psw);
                     }
                 }
             }
@@ -70,6 +74,29 @@ namespace KBB.Online.BLL
             return user;
         }
 
-       
+        public bool GetUserData(string iin, out string message)
+        {
+            try
+            {
+                var restClient = new RestSharp.RestClient("https://meteor.almaty.e-orda.kz");
+
+                var request = new RestRequest("/ru/api-form/load-info-by-iin/?iin=" + iin + "&params[city_check]=true");
+
+                RestResponse response = restClient.Execute(request);
+
+
+                User personalData = JsonConvert.DeserializeObject<User>(response.Content);
+
+
+                message = "ok";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return false;
+            }
+        }
+
     }
 }
