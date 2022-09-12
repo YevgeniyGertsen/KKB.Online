@@ -10,6 +10,7 @@ namespace KKB.Online
     internal class Program
     {
         static string Path = @"C:\Temp\MyData.db";
+
         static void Main(string[] args)
         {
             int ch = 0;
@@ -38,6 +39,7 @@ namespace KKB.Online
                             Console.Write("Введите ИИН: ");
                             IIN = Console.ReadLine();
                             Console.Write("Введите пароль: ");
+                        
                             Password = Console.ReadLine();
                             personal_data user = userService.GetUser(IIN, Password);
                             if (user == null)
@@ -57,11 +59,26 @@ namespace KKB.Online
                                 Console.Write("Выберете пункты меню: ");
                                 ch = Convert.ToInt32(Console.ReadLine());
 
+                                AccountService accountService = new AccountService(Path);
+
                                 switch (ch)
                                 {
                                     case 1:
                                         {
-                                            
+                                            string message_ = "";
+                                            string accountIBAN = "";
+
+                                           if(accountService.CreateAccount(user.UserId, out message_, out accountIBAN))
+                                            {
+                                                Console.WriteLine("Поздравляем Ваш счет {0} {1}", accountIBAN, message_);
+                                            }
+                                           else
+                                            {
+                                                Console.WriteLine(message);
+
+
+                                            }
+                                           
                                             break;
                                         }
 
@@ -92,6 +109,9 @@ namespace KKB.Online
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine(message);
                                 Console.ForegroundColor = ConsoleColor.White;
+
+
+
                             }
                             else
                             {

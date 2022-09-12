@@ -119,6 +119,5 @@ namespace KBB.Online.BLL
             }
         }
 
-
     }
 }
