@@ -57,5 +57,52 @@ namespace KBB.Online.BLL
             }
             return account;
         }
+
+        public List<Account> GetAllAccounts()
+        {
+            List<Account> accounts = new List<Account>();
+            using (var db = new LiteDatabase(Path))
+            {
+                var collectionAc = db.GetCollection<Account>("Account");
+
+                accounts = collectionAc.FindAll().ToList();
+               
+            }
+
+            return accounts;
+        }
+
+        public List<Account> GetUserAccounts(int userId)
+        {
+            List<Account> accounts = new List<Account>();
+
+            accounts = GetAllAccounts().Where(w => w.UserId == userId).ToList();
+
+            return accounts;
+        }
+
+        public bool AddBalance(int accountId, double balance)
+        {
+            try
+            {
+                using (LiteDatabase db = new LiteDatabase(Path))
+                {
+
+                    var accounts = db.GetCollection<Account>("Account");
+
+                    Account account = accounts.FindById(accountId);
+                    account.Balance = account.Balance + balance;
+
+                    accounts.Update(account);
+
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+                
+            }
+        }
     }
 }

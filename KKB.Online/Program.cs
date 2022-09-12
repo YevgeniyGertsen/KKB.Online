@@ -76,7 +76,6 @@ namespace KKB.Online
                                             {
                                                 Console.WriteLine(message);
 
-
                                             }
                                            
                                             break;
@@ -84,7 +83,35 @@ namespace KKB.Online
 
                                     case 2:
                                         {
+                                            List<Account> accounts = accountService.GetUserAccounts(user.UserId);
+                                            if(accounts.Count > 0)
+                                            {
+                                                foreach (Account item in accounts)
+                                                {
+                                                    Console.WriteLine("{0}. {1} - {2} {3}",
+                                                        item.AccountId,
+                                                        item.IBAN,
+                                                        item.Balance,
+                                                        item.GetCurrencyName);
+                                                }
 
+                                                Console.Write("Какой счет пополнить: ");
+                                                int temp = Convert.ToInt32(Console.ReadLine());
+
+                                                Console.Write("На какую сумму пополнить счет: ");
+                                                double balance = Convert.ToDouble(Console.ReadLine());
+
+                                                if (accountService.AddBalance(temp, balance))
+                                                {
+                                                    Console.WriteLine("Баланс пополнен");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Что-то пошло не так");
+                                                }
+
+      
+                                            }
                                             break;
                                         }
                                     case 3:
