@@ -57,5 +57,46 @@ namespace KBB.Online.BLL
                 return string.Format("{0} {1}", Balance, GetCurrencyName);
             }
         }
+        public static double operator +(Account a, Account b)
+        {
+            return a.Balance + b.Balance;
+        }
+        public static bool operator >(Account a, Account b)
+        {
+            if(a.Currency == b.Currency)
+            {
+                return a.Balance > b.Balance;
+            }
+            else if(a.Currency != b.Currency && a.Currency == 2)
+            {
+
+                return (a.Balance * 480) > b.Balance;
+            }
+            else
+            {
+                return (a.Balance / 480) > b.Balance;
+            }
+        }
+        public static bool operator <(Account a, Account b)
+        {
+            if (a.Currency == b.Currency)
+            {
+                return a.Balance < b.Balance;
+            }
+            else if (a.Currency != b.Currency && a.Currency == 2)
+            {
+
+                return (a.Balance * 480) < b.Balance;
+            }
+            else
+            {
+                return (a.Balance / 480) < b.Balance;
+            }
+        }
+        public override string ToString()
+        {
+            return String.Format("{0}. {1} - {2} {3}", AccountId, IBAN, Balance, GetCurrencyName);
+        }
+
     }
 }

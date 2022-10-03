@@ -92,11 +92,13 @@ namespace KKB.Online
                                             {
                                                 foreach (Account item in accounts)
                                                 {
-                                                    Console.WriteLine("{0}. {1} - {2} {3}",
-                                                        item.AccountId,
-                                                        item.IBAN,
-                                                        item.Balance,
-                                                        item.GetCurrencyName);
+                                                    //Console.WriteLine("{0}. {1} - {2} {3}",
+                                                    //    item.AccountId,
+                                                    //    item.IBAN,
+                                                    //    item.Balance,
+                                                    //    item.GetCurrencyName);
+
+                                                    Console.WriteLine(item.ToString());
                                                 }
 
                                                 Console.Write("Какой счет пополнить: ");
