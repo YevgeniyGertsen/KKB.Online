@@ -13,10 +13,6 @@ namespace KKB.Online
 
         static void Main(string[] args)
         {
-
-
-
-
             int ch = 0;
             try
             {
@@ -64,24 +60,14 @@ namespace KKB.Online
                                 ch = Convert.ToInt32(Console.ReadLine());
 
                                 AccountService accountService = new AccountService(Path);
+                               
 
                                 switch (ch)
                                 {
                                     case 1:
                                         {
-                                            string message_ = "";
-                                            string accountIBAN = "";
-
-                                           if(accountService.CreateAccount(user.UserId, out message_, out accountIBAN))
-                                            {
-                                                Console.WriteLine("Поздравляем Ваш счет {0} {1}", accountIBAN, message_);
-                                            }
-                                           else
-                                            {
-                                                Console.WriteLine(message);
-
-                                            }
-                                           
+                                            accountService.RegisterNotificationHandler(Lib.Notification.ResultCreateAccount);
+                                            accountService.CreateAccount(user.UserId);
                                             break;
                                         }
 
